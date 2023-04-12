@@ -27,6 +27,7 @@ async function handleRequest(request: Request): Promise<Response> {
   const url = new URL(request.url);
   // url.host = 'mslynnhair.com';
   // url.host = 'performance1.myshopline.com';
+  url.host = 'hekkanigeria.com';
   const fileName = fileNameMap[url.pathname];
 
   if (fileName) {
