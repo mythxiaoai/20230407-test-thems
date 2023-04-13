@@ -303,6 +303,100 @@ window.addEventListener('load', function () {
       })();
     </script>
 <script >window.__CUSTOM_HEADER_START__ = __SL_CUSTOM_CODE_GETROW__()</script>
+<script>
+  function initFreshChat() {
+    var preChatTemplate = {
+      mainbgColor: '#2f0f70',
+      maintxColor: '#pink',
+      heading: 'Chat',
+      textBanner: 'We can\'t wait to talk to you. But first, please take a couple of moments to tell us a bit about yourself.',
+      SubmitLabel: 'Start Chat',
+      fields : {
+        field1 : {
+          type: "name",
+          label: "Name",
+          fieldId: "name",
+          required: "yes",
+          error: "Please Enter a valid name"
+        },
+        field2 : {
+          type: "email",
+          label: "Email",
+          fieldId: "email",
+          required: "yes",
+          error: "Please Enter a valid Email"
+        },
+        field3 : {
+          type: "dropdown",
+          label: "Plan",
+          fieldId: "plan",
+          required: "yes",
+          error: "Please select an option",
+          options: ['Return and Refund', 'Track and Delivery', 'Order Modification', 'Payment', 'Product inquiry', 'Others']
+        }
+      }
+           };
+    window.fcSettings = {
+      token: "2c2de33f-dc5e-4508-91c9-8faa324ef8ff",
+      host: "https://wchat.freshchat.com",
+      siteId: 'hekkanigeria.com',
+      locale: 'en',
+      open: false,
+      config: {
+        cssNames: {
+          widget: 'custom_fc_frame',
+          expanded: 'custom_fc_expanded'
+        },
+        content: {
+          headers: {
+            csat_question: 'Would you like to rate our service?' // 关闭对话的提示语
+          }
+        }
+      },
+      onInit: function() {
+        console.log('%c widget init fcPreChatform done', 'font-size: 16px;color: pink;');
+        fcPreChatform.fcWidgetInit(preChatTemplate);
+        window.fcWidget.on("user:created", function(resp) {
+          console.log('User has been created', resp);
+        });
+        window.fcWidget.on("widget:opened", function(resp) {
+          console.log('Widget Opened 1', resp);
+          setTimeout(() => {
+            `` && $('#chat-fc-name').val(``);
+            `` && $('#chat-fc-email').val(``);
+          }, 300)
+        });
+      }
+    };
+  }
+  function initialize(i,t,s,o){var e;i.getElementById(t)?initFreshChat():((e=i.createElement("script")).id=t,e.async=!0,e.src=s,e.onload=o,i.head.appendChild(e))}function initiateCall(){initialize(document,"Freshdesk Messaging-js-sdk", "https://wchat.freshchat.com/js/widget.js", initialize(document,"fc-pre-chat-form-v2", "https://snippets.freshchat.com/js/fc-pre-chat-form-v2.min.js", initFreshChat))}window.addEventListener?window.addEventListener("load",initiateCall,!1):window.attachEvent("load",initiateCall,!1);
+</script>
+<script async id="phx_analytics" src="https://akoss.bangcdn.net/fe/phx_analytics.js"></script>
+<script>
+  //setcookies
+  function set_cookies(name,gtm_var){
+    var cookieName=name;
+    var cookieValue=gtm_var;
+    var expirationTime=2592000;
+    expirationTime=expirationTime*1000;
+    var date=new Date();
+    var dateTimeNow=date.getTime();
+    date.setTime(dateTimeNow+expirationTime);
+    var expirationTime=date.toUTCString();
+    document.cookie=cookieName+"="+cookieValue+";expires="+expirationTime+";path=/;domain=."+location.hostname.replace(/^www\./i,"");
+  }
+  //seturlparams
+  function getURLParam(name_){
+    var url_=new URL(String(window.location.href));
+    var value=url_.searchParams.get(name_)
+    return value;
+  }
+  var utm_source=getURLParam('utm_source');
+  if(utm_source!=null){
+    set_cookies('UTM_SOURCE',utm_source);
+  }
+</script>
+
 <script >window.__CUSTOM_HEADER_END__ = __SL_CUSTOM_CODE_GETROW__()</script>
 <script type="text/javascript" src="https://cdn.myshopline.com/t/layout/prod/app-extension/9c0071a2-79bf-4a36-9654-4ffe55320954/1669016585191/assets/app-embed-block.js" defer="defer"></script>
 <script type="text/javascript" src="https://cdn.myshopline.com/t/layout/prod/app-extension/e4a69c52-27bd-4ec9-86c8-1d5b4d867769/1680184045304/assets/discount.js" defer="defer"></script>
