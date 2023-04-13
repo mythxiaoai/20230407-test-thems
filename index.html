@@ -303,100 +303,6 @@ window.addEventListener('load', function () {
       })();
     </script>
 <script >window.__CUSTOM_HEADER_START__ = __SL_CUSTOM_CODE_GETROW__()</script>
-<script>
-  function initFreshChat() {
-    var preChatTemplate = {
-      mainbgColor: '#2f0f70',
-      maintxColor: '#pink',
-      heading: 'Chat',
-      textBanner: 'We can\'t wait to talk to you. But first, please take a couple of moments to tell us a bit about yourself.',
-      SubmitLabel: 'Start Chat',
-      fields : {
-        field1 : {
-          type: "name",
-          label: "Name",
-          fieldId: "name",
-          required: "yes",
-          error: "Please Enter a valid name"
-        },
-        field2 : {
-          type: "email",
-          label: "Email",
-          fieldId: "email",
-          required: "yes",
-          error: "Please Enter a valid Email"
-        },
-        field3 : {
-          type: "dropdown",
-          label: "Plan",
-          fieldId: "plan",
-          required: "yes",
-          error: "Please select an option",
-          options: ['Return and Refund', 'Track and Delivery', 'Order Modification', 'Payment', 'Product inquiry', 'Others']
-        }
-      }
-           };
-    window.fcSettings = {
-      token: "2c2de33f-dc5e-4508-91c9-8faa324ef8ff",
-      host: "https://wchat.freshchat.com",
-      siteId: 'hekkanigeria.com',
-      locale: 'en',
-      open: false,
-      config: {
-        cssNames: {
-          widget: 'custom_fc_frame',
-          expanded: 'custom_fc_expanded'
-        },
-        content: {
-          headers: {
-            csat_question: 'Would you like to rate our service?' // 关闭对话的提示语
-          }
-        }
-      },
-      onInit: function() {
-        console.log('%c widget init fcPreChatform done', 'font-size: 16px;color: pink;');
-        fcPreChatform.fcWidgetInit(preChatTemplate);
-        window.fcWidget.on("user:created", function(resp) {
-          console.log('User has been created', resp);
-        });
-        window.fcWidget.on("widget:opened", function(resp) {
-          console.log('Widget Opened 1', resp);
-          setTimeout(() => {
-            `` && $('#chat-fc-name').val(``);
-            `` && $('#chat-fc-email').val(``);
-          }, 300)
-        });
-      }
-    };
-  }
-  function initialize(i,t,s,o){var e;i.getElementById(t)?initFreshChat():((e=i.createElement("script")).id=t,e.async=!0,e.src=s,e.onload=o,i.head.appendChild(e))}function initiateCall(){initialize(document,"Freshdesk Messaging-js-sdk", "https://wchat.freshchat.com/js/widget.js", initialize(document,"fc-pre-chat-form-v2", "https://snippets.freshchat.com/js/fc-pre-chat-form-v2.min.js", initFreshChat))}window.addEventListener?window.addEventListener("load",initiateCall,!1):window.attachEvent("load",initiateCall,!1);
-</script>
-<script async id="phx_analytics" src="https://akoss.bangcdn.net/fe/phx_analytics.js"></script>
-<script>
-  //setcookies
-  function set_cookies(name,gtm_var){
-    var cookieName=name;
-    var cookieValue=gtm_var;
-    var expirationTime=2592000;
-    expirationTime=expirationTime*1000;
-    var date=new Date();
-    var dateTimeNow=date.getTime();
-    date.setTime(dateTimeNow+expirationTime);
-    var expirationTime=date.toUTCString();
-    document.cookie=cookieName+"="+cookieValue+";expires="+expirationTime+";path=/;domain=."+location.hostname.replace(/^www\./i,"");
-  }
-  //seturlparams
-  function getURLParam(name_){
-    var url_=new URL(String(window.location.href));
-    var value=url_.searchParams.get(name_)
-    return value;
-  }
-  var utm_source=getURLParam('utm_source');
-  if(utm_source!=null){
-    set_cookies('UTM_SOURCE',utm_source);
-  }
-</script>
-
 <script >window.__CUSTOM_HEADER_END__ = __SL_CUSTOM_CODE_GETROW__()</script>
 <script type="text/javascript" src="https://cdn.myshopline.com/t/layout/prod/app-extension/9c0071a2-79bf-4a36-9654-4ffe55320954/1669016585191/assets/app-embed-block.js" defer="defer"></script>
 <script type="text/javascript" src="https://cdn.myshopline.com/t/layout/prod/app-extension/e4a69c52-27bd-4ec9-86c8-1d5b4d867769/1680184045304/assets/discount.js" defer="defer"></script>
@@ -3623,7 +3529,248 @@ window.cb_plugins = {
 </style>
 <!-- <script type="text/javascript" await src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=XGutTR"></script> -->
 <!-- <script async type="text/javascript" src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=XGutTR&v=10.0.0"></script> -->
+<script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
+<script>
+  let handle = window.Shopline.handle
+
+  axios.get('https://klav.startercommerce.com/v1/index/get_key', {
+    params: {
+      handle: handle
+    }
+  })
+    .then(function (response) {
+      let src='https://static.klaviyo.com/onsite/js/klaviyo.js?company_id='+response.data.data
+      console.log('responseresponse',src)
+      createScript(src, function () {
+        console.log('OK');
+      });
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+
+    });
+
+
+
+  var _learnq = _learnq || [];
+  console.log('_learnq :', _learnq)
+
+
+  axios.get('https://klav.startercommerce.com/v1/shopline/get_customer', {
+    params: {
+      customer_id:window.Shopline.customer.id//2223829995
+    }
+  })
+    .then(function (response) {
+      if (response.data.data) {
+        var abcds = _learnq.push(['identify', {
+          'email': response.data.data
+        }]);
+      } else {
+        return
+      }
+      console.log('response.data.data', response.data.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+    .then(function () {
+      // always executed
+    });
+  //    console.log('_learnq',abcds)
+  // axios.POST('https://a.klaviyo.com/api/track', {
+  //     params: {
+  //       data: {"event":"Added to Cart","token":"XGutTR","properties":{"$value":12,"Email":"171869092@qq.com","AddedItemProductName":"red","AddedItemProductID":"16054007845689944433250964","AddedItemSKU":"422030784719802369","AddedItemCategories":[""],"AddedItemImageURL":"http://www.example.com/path/to/product/image2.png","AddedItemURL":"http://www.example.com/path/to/product2","AddedItemPrice":12,"AddedItemQuantity":1,"ItemNames":["red"],"CheckoutURL":"http://www.example.com/path/to/checkout","Items":[{"ProductID":"1111","SKU":"422030784719802369","ProductName":"red","Quantity":1,"ItemPrice":12,"RowTotal":12,"ProductURL":"http://www.example.com/path/to/product","ImageURL":"http://www.example.com/path/to/product/image.png","ProductCategories":[""]}],"$use_ip":true,"$is_session_activity":true},"customer_properties":{"email":"george.washington@example.com","first_name":"George","last_name":"Washington","$exchange_id":"FSG8NDq3o3UItArXDIHRaQ==.YzuGWV","$referrer":{"ts":1661488467,"value":"","first_page":"https://lives-will.myshopline.com/collections/"},"$last_referrer":{"ts":1661756250,"value":"https://lives-will.myshopline.com/collections","first_page":"https://lives-will.myshopline.com/products/-copy-live-by-test"}}}
+  //     }
+  //   })
+  //     .then(function (response) {
+  //       console.log('Added to Cart-klaviyo',response);
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     })
+  //     .then(function () {
+  //       // always executed
+  //     });
+
+  window.addEventListener('load', function (event) {
+    console.log('addEventListener----', event)
+  })
+
+  console.log('handle', GetQueryString("handle"), window.Shopline.handle, window.Shopline)
+
+
+
+  window.Shopline.event.on('DataReport::ActiveonSite', function (payload) {
+    console.log('网站活跃', payload)
+
+    const { data } = payload;
+
+    //do something
+  })
+  //2222222
+  window.Shopline.event.on('DataReport::ViewContent', function (payload) {
+    console.log('查看商品', payload.data.title)
+    const { data } = payload;
+    console.log('查看商品2', data)
+
+    var item = [{
+      "ProductName": data.title,
+      "ProductID": data.content_spu_id,
+      "SKU": "WINNIEPOOH",
+      "Categories": [],
+      "ImageURL": "",
+      "URL": "",
+      "Price": data.price,
+      "CompareAtPrice": data.curSkuPrice
+    }];
+
+    console.log('item = ', item)
+    let ccc = _learnq.push(["track", "Viewed Product", item]);
+    console.log('print = ', ccc)
+    //do something
+  })
+  //3333333
+  window.Shopline.event.on('DataReport::AddToCart', function (payload) {
+    console.log('我添加了购物车', payload, payload.onSuccess)
+    const { data } = payload;
+//content_category: ""
+//content_name: "[Copy]live-by-test"
+//content_sku_id: "18054413409479832238700964"
+//content_spu_id: "16054413409476141250680964"
+//currency: "USD"
+//price: 12
+//quantity: 1
+//value: 12 
+
+    let abcd = _learnq.push(["track", "Added to Cart", {
+      "$value": 12,
+      "$Email": '171869092@qq.com',
+      "$AddedItemProductName": "red",
+      "$AddedItemProductID": "16054007845689944433250964",
+      "$AddedItemSKU": "422030784719802369",
+      "$AddedItemCategories": [""],
+      //  "AddedItemCategories": ["Fiction", "Classics"],
+      "$AddedItemImageURL": "",
+      "$AddedItemURL": "",
+      "$AddedItemPrice": 12,
+      "$AddedItemQuantity": 1,
+      "$ItemNames": ["red"],
+      "$CheckoutURL": "",
+      "$Items": [{
+        "$ProductID": "1111",
+        "$SKU": "422030784719802369",
+        "$ProductName": "red",
+        "$Quantity": 1,
+        "$ItemPrice": 12,
+        "$RowTotal": 12,
+        "$ProductURL": "",
+        "$ImageURL": "",
+        "$ProductCategories": [""]
+      }
+      ]
+    }]);
+    console.log('abcd', abcd)
+
+    console.log('abcd', _learnq.error)
+
+
+  })
+  window.Shopline.event.on('DataReport::InitiateCheckout', function (payload) {
+    console.log('我添加开始结账了购物车，进入了结算页面', payload)
+
+    const { data } = payload;
+
+    //do something
+  })
+  window.Shopline.event.on('DataReport::CompleteOrder', function (payload) {
+    console.log('下单,完成订单', payload)
+
+    const { data } = payload;
+
+    //do something
+  })
+
+  window.Shopline.event.on('DataReport::Purchase ', function (payload) {
+    console.log('下单完成并且支付成功时触发', payload)
+
+    const { data } = payload;
+
+    //do something
+  })
+  window.Shopline.event.on('DataReport::OrderedProduct', function (payload) {
+    console.log('订购商品', payload)
+
+    const { data } = payload;
+
+    //do something
+  })
+  window.Shopline.event.on('DataReport::FulfilledOrder', function (payload) {
+    console.log('赴约', payload)
+
+    const { data } = payload;
+
+    //do something
+  })
+  window.Shopline.event.on('DataReport::CancelledOrder', function (payload) {
+    console.log('取消订单', payload)
+
+    const { data } = payload;
+
+    //do something
+  })
+
+  window.Shopline.event.on('DataReport::RefundedOrder', function (payload) {
+    console.log('订单退款', payload)
+
+    const { data } = payload;
+
+    //do something
+  })
+
+
+  function GetQueryString(name) {
+    let str = window.location.host
+    let leng = str.indexOf(".");
+    let handled = str.substring(0, leng)
+    return handled
+  }
+
+  // 动态插入script标签
+  function createScript(url, callback) {
+    var oScript = document.createElement('script');
+    oScript.type = 'text/javascript';
+    oScript.async = true;
+    oScript.src = url;
+    /*
+    ** script标签的onload和onreadystatechange事件
+    ** IE6/7/8支持onreadystatechange事件
+    ** IE9/10支持onreadystatechange和onload事件
+    ** Firefox/Chrome/Opera支持onload事件
+    */
+
+    // 判断IE8及以下浏览器
+    var isIE = !-[1,];
+    if (isIE) {
+      alert('IE')
+      oScript.onreadystatechange = function () {
+        if (this.readyState == 'loaded' || this.readyState == 'complete') {
+          callback();
+        }
+      }
+    } else {
+      // IE9及以上浏览器，Firefox，Chrome，Opera
+      oScript.onload = function () {
+        callback();
+      }
+    }
+    document.body.appendChild(oScript);
+  }
+</script>
 
 </div>
   <div data-ssr-plugin-body-bottom></div>
