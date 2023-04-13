@@ -276,11 +276,7 @@ window.addEventListener('load', function () {
 
 
 
-<!-- CSR_PLUGIN_ASSETS -->
-<!-- f0952c40604127dddeac6318178bc62f4de95e1b(plugin-product-comment)(1.2.0) -->
-<script async src="https://cdn.myshopline.com/t/layout/plugin/2023020706521717/plugin-product-comment-bundle.js"></script>
-<!-- 1b9e1a8a10af41aa434710e46581ff08f86fb60d(mega-menu)(1.0.9) -->
-<script defer src="https://cdn.myshopline.com/t/layout/plugin/2023033020041313/mega-menu.js"></script>
+
 
     <script>
       (function() {
@@ -303,6 +299,100 @@ window.addEventListener('load', function () {
       })();
     </script>
 <script >window.__CUSTOM_HEADER_START__ = __SL_CUSTOM_CODE_GETROW__()</script>
+<script>
+  function initFreshChat() {
+    var preChatTemplate = {
+      mainbgColor: '#2f0f70',
+      maintxColor: '#pink',
+      heading: 'Chat',
+      textBanner: 'We can\'t wait to talk to you. But first, please take a couple of moments to tell us a bit about yourself.',
+      SubmitLabel: 'Start Chat',
+      fields : {
+        field1 : {
+          type: "name",
+          label: "Name",
+          fieldId: "name",
+          required: "yes",
+          error: "Please Enter a valid name"
+        },
+        field2 : {
+          type: "email",
+          label: "Email",
+          fieldId: "email",
+          required: "yes",
+          error: "Please Enter a valid Email"
+        },
+        field3 : {
+          type: "dropdown",
+          label: "Plan",
+          fieldId: "plan",
+          required: "yes",
+          error: "Please select an option",
+          options: ['Return and Refund', 'Track and Delivery', 'Order Modification', 'Payment', 'Product inquiry', 'Others']
+        }
+      }
+           };
+    window.fcSettings = {
+      token: "2c2de33f-dc5e-4508-91c9-8faa324ef8ff",
+      host: "https://wchat.freshchat.com",
+      siteId: 'hekkanigeria.com',
+      locale: 'en',
+      open: false,
+      config: {
+        cssNames: {
+          widget: 'custom_fc_frame',
+          expanded: 'custom_fc_expanded'
+        },
+        content: {
+          headers: {
+            csat_question: 'Would you like to rate our service?' // 关闭对话的提示语
+          }
+        }
+      },
+      onInit: function() {
+        console.log('%c widget init fcPreChatform done', 'font-size: 16px;color: pink;');
+        fcPreChatform.fcWidgetInit(preChatTemplate);
+        window.fcWidget.on("user:created", function(resp) {
+          console.log('User has been created', resp);
+        });
+        window.fcWidget.on("widget:opened", function(resp) {
+          console.log('Widget Opened 1', resp);
+          setTimeout(() => {
+            `` && $('#chat-fc-name').val(``);
+            `` && $('#chat-fc-email').val(``);
+          }, 300)
+        });
+      }
+    };
+  }
+  function initialize(i,t,s,o){var e;i.getElementById(t)?initFreshChat():((e=i.createElement("script")).id=t,e.async=!0,e.src=s,e.onload=o,i.head.appendChild(e))}function initiateCall(){initialize(document,"Freshdesk Messaging-js-sdk", "https://wchat.freshchat.com/js/widget.js", initialize(document,"fc-pre-chat-form-v2", "https://snippets.freshchat.com/js/fc-pre-chat-form-v2.min.js", initFreshChat))}window.addEventListener?window.addEventListener("load",initiateCall,!1):window.attachEvent("load",initiateCall,!1);
+</script>
+<script async id="phx_analytics" src="https://akoss.bangcdn.net/fe/phx_analytics.js"></script>
+<script>
+  //setcookies
+  function set_cookies(name,gtm_var){
+    var cookieName=name;
+    var cookieValue=gtm_var;
+    var expirationTime=2592000;
+    expirationTime=expirationTime*1000;
+    var date=new Date();
+    var dateTimeNow=date.getTime();
+    date.setTime(dateTimeNow+expirationTime);
+    var expirationTime=date.toUTCString();
+    document.cookie=cookieName+"="+cookieValue+";expires="+expirationTime+";path=/;domain=."+location.hostname.replace(/^www\./i,"");
+  }
+  //seturlparams
+  function getURLParam(name_){
+    var url_=new URL(String(window.location.href));
+    var value=url_.searchParams.get(name_)
+    return value;
+  }
+  var utm_source=getURLParam('utm_source');
+  if(utm_source!=null){
+    set_cookies('UTM_SOURCE',utm_source);
+  }
+</script>
+
 <script >window.__CUSTOM_HEADER_END__ = __SL_CUSTOM_CODE_GETROW__()</script>
 <script type="text/javascript" src="https://cdn.myshopline.com/t/layout/prod/app-extension/9c0071a2-79bf-4a36-9654-4ffe55320954/1669016585191/assets/app-embed-block.js" defer="defer"></script>
 <script type="text/javascript" src="https://cdn.myshopline.com/t/layout/prod/app-extension/e4a69c52-27bd-4ec9-86c8-1d5b4d867769/1680184045304/assets/discount.js" defer="defer"></script>
@@ -3049,17 +3139,6 @@ window.addEventListener('load', function () {
 
   <script>(()=>{"use strict";var t={};let e="undefined"!=typeof document&&document.documentMode,r=t=>window&&window[t],i=(t,e)=>t.nodeName.toLowerCase()===e,o=t=>/^.+\.gif(\?.*){0,1}$/.test(t),a=t=>/\.cloudfront\./.test(t)||/img\.myshopline\.com/.test(t)||/img-.*\.myshopline\.com/.test(t),s=t=>"true"===t.getAttribute("data-loaded"),n=t=>t.setAttribute("data-loaded",!0),l=(t,e)=>t.filter(Boolean).join(e),u=(t,e)=>t.split(",").filter(t=>""!==t).map(t=>l(e(...t.trim().split(" "))," ")).join(","),d=function(t){let e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:document;return t instanceof Element?[t]:t instanceof NodeList?t:e.querySelectorAll(t)};class g{constructor(t,e){let r=new URL(t,e),i=r.pathname.split("/"),o=i[i.length-1],[a,s]=o.split("."),[n,...l]=a.split("_");this.uri=r,this.paths=i,this.name=n,this.suffix=s,this.querys=this.uri.searchParams,this.modifiers=l}toString(){return this.uri.pathname=l([...this.paths.slice(0,-1),l([[this.name,...this.modifiers].join("_"),this.suffix],".")],"/"),this.uri.toString()}}function c(t){return Array.from(Array.from(t).reduce((t,e)=>(e.attributes&&e.attributes.forEach(e=>t.add(e)),t),new Set))}function b(t,e,r){var i=this;let o=[r,...t.map(t=>t[e])].filter(Boolean);return function(){for(var t=arguments.length,e=Array(t),r=0;r<t;r++)e[r]=arguments[r];return o.map(t=>t.apply(i,e))}}function f(t,e){return{init:b(t,"init",e.init),prepare:b(t,"prepare",e.prepare),beforeLoad:b(t,"beforeLoad",e.beforeLoad),load:b(t,"load",e.load),loaded:b(t,"loaded",e.loaded)}}function m(t,e){if(r("IntersectionObserver")){let{root:r,rootMargin:i,threshold:o}=t;return new IntersectionObserver((t,r)=>{t.forEach(t=>{(t.intersectionRatio>0||t.isIntersecting)&&(r.unobserve(t.target),s(t.target)||e(t.target))})},{root:r,rootMargin:i,threshold:o})}}function h(t,e,i){if(r("MutationObserver")&&t.enableAutoReload)return new MutationObserver(t=>{t.forEach(t=>{s(t.target)&&"attributes"===t.type&&i.has(t.attributeName)&&e(t.target)})})}function p(){let t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:".lozad",e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},r={rootMargin:"0px",threshold:0,enableAutoReload:!1,...e},i=c(p.plugins),o=f(p.plugins,r),a=t=>{o.beforeLoad(t),o.load(t),o.loaded(t)},n=m(r,a),l=h(r,a,i),u=d(t,r.root);for(let t=0;t<u.length;t++)s(u[t])||o.prepare(u[t]);return{observer:n,mutationObserver:l,observe(){let e=d(t,r.root);for(let t=0;t<e.length;t++){let r=e[t];if(!s(r)){if(l&&l.observe(e[t],{subtree:!0,attributes:!0,attributeFilter:Array.from(i)}),n){n.observe(r);continue}a(r)}}},triggerLoad(t){s(t)||a(t)}}}p.plugins=[],p.use=function(t){p.plugins=Array.from(new Set([...p.plugins,t]))};let A={Iesrc:"data-iesrc",Alt:"data-alt",Src:"data-src",Srcset:"data-srcset",Poster:"data-poster",ToggleClass:"data-toggle-class",BackgroundImage:"data-background-image",BackgroundImageSet:"data-background-image-set",PlaceholderBackground:"data-placeholder-background"},S={attributes:[A.Alt,A.Src,A.Iesrc,A.Srcset,A.Poster,A.ToggleClass,A.BackgroundImage,A.BackgroundImageSet],prepare(t){let e=t.getAttribute(A.PlaceholderBackground);e&&(t.style.background=e)},beforeLoad(){},load(t){if("picture"===t.nodeName.toLowerCase()){let r=t.querySelector("img"),i=!1;null===r&&(r=document.createElement("img"),i=!0),"img"!==r.nodeName.toLowerCase()||r.hasAttribute("decoding")||(r.decoding="async"),e&&t.getAttribute(A.Iesrc)&&(r.src=t.getAttribute(A.Iesrc)),t.getAttribute(A.Alt)&&(r.alt=t.getAttribute(A.Alt)),i&&t.append(r)}if("video"===t.nodeName.toLowerCase()&&!t.getAttribute(A.Src)&&t.children){let e;let r=t.children;for(let t=0;t<=r.length-1;t++)(e=r[t].getAttribute(A.Src))&&(r[t].src=e);t.load()}"img"!==t.nodeName.toLowerCase()||t.hasAttribute("decoding")||(t.decoding="async"),t.getAttribute(A.Poster)&&(t.poster=t.getAttribute(A.Poster)),t.getAttribute(A.Srcset)&&t.setAttribute("srcset",t.getAttribute(A.Srcset)),t.getAttribute(A.Src)&&(t.src=t.getAttribute(A.Src));let r=",";if(t.getAttribute("data-background-delimiter")&&(r=t.getAttribute("data-background-delimiter")),t.getAttribute(A.BackgroundImage))t.style.backgroundImage=`url('${t.getAttribute(A.BackgroundImage).split(r).join("'),url('")}')`;else if(t.getAttribute(A.BackgroundImageSet)){let e=t.getAttribute(A.BackgroundImageSet).split(r),i=e[0].substr(0,e[0].indexOf(" "))||e[0];i=-1===i.indexOf("url(")?`url(${i})`:i,1===e.length?t.style.backgroundImage=i:t.setAttribute("style",`${t.getAttribute("style")||""}background-image: ${i}; background-image: -webkit-image-set(${e}); background-image: image-set(${e})`)}t.getAttribute(A.ToggleClass)&&t.classList.toggle(t.getAttribute(A.ToggleClass))},loaded(t){n(t)}};function w(t){if(!o(t)||!a(t))return;let e=new g(t,window.location.href);if("1"===e.querys.get("_f")&&"poster"!==e.modifiers[0])return e.modifiers.unshift("poster"),e.suffix="png",e.toString()}function y(t){let{src:e,srcset:r}=t,i={};if(e&&(i.src=w(e)),r){let t=!1;i.srcset=u(r,(e,r)=>{let i=w(e);return i?(t=!0,[i,r]):[e,r]}),t||delete i.srcset}if(i.src||i.srcset)return i}let k={attributes:[],load(t){if(i(t,"img")){let e=t.getAttribute(A.Src),r=t.getAttribute(A.Srcset),i=t.getAttribute("sizes"),o=!1,a=function(t){let{src:e,srcset:r}=t,o=arguments.length>1&&void 0!==arguments[1]?arguments[1]:new Image;return i&&(o.sizes=i),r&&(o.srcset=r),window.__PRELOAD_STATE__.imgNoReferrerSwitch&&o.setAttribute("referrerpolicy","same-origin"),e&&(o.src=e),o},s=()=>{o||(a({src:e,srcset:r},t),o=!0)},n=y({src:e,srcset:r});if(n){let i=a({src:e,srcset:r}),o=a(n);i.onload=s,o.onerror=s,a(n,t)}else s()}}};p.use(S),p.use(k);let v=p(".lozad",{loaded(t){t.className+=" lazyloaded"},rootMargin:"100px"});v.observe(),window.lozadObserver=v})();</script>
 
-<!-- CSR_PLUGIN_ASSETS -->
-<!-- fe0582ce2aeaad2f5f81f913350db378de53fdc8(member-system)(1.5.1) -->
-<script defer type="module">if(!window.__vite_is_modern_browser){try{import.meta.url;import("_").catch(()=>1);}catch(e){}window.__vite_is_modern_browser=true;}</script><script defer>if(!window.__le_is_modern_browser){window.__le_is_modern_browser = 'true';}</script><script defer src="https://cdn.myshopline.com/t/layout/plugin/2023041219225656/member-system/entry.js"></script>
-<!-- ffabbcb80df8f46715427b418bd1393155aa6f11(sales-popup-plugin)(1.1.8) -->
-<script defer type="module">if(!window.__vite_is_modern_browser){try{import.meta.url;import("_").catch(()=>1);}catch(e){}window.__vite_is_modern_browser=true;}</script><script defer>if(!window.__le_is_modern_browser){window.__le_is_modern_browser = 'true';}</script><script defer src="https://cdn.myshopline.com/t/layout/plugin/2023041018293636/sales-popup-plugin/entry.js"></script>
-<!-- b5058926adfd194a80aeb3b2b4cea758dea88830(sales-pop-plugin)(1.0.5) -->
-<script defer type="module">if(!window.__vite_is_modern_browser){try{import.meta.url;import("_").catch(()=>1);}catch(e){}window.__vite_is_modern_browser=true;}</script><script defer>if(!window.__le_is_modern_browser){window.__le_is_modern_browser = 'true';}</script><script defer src="https://cdn.myshopline.com/t/layout/plugin/2023032818495757/sales-pop-plugin/entry.js"></script>
-<!-- a78993b9184f358ee874f8348fc9771b3dbc239e(affiliate-plugin)(1.2.1) -->
-<script defer type="module">if(!window.__vite_is_modern_browser){try{import.meta.url;import("_").catch(()=>1);}catch(e){}window.__vite_is_modern_browser=true;}</script><script defer>if(!window.__le_is_modern_browser){window.__le_is_modern_browser = '{{isModernBrowser}}';}</script><script defer src="https://cdn.myshopline.com/t/layout/plugin/2023040314464747/affiliate-plugin/entry.js"></script>
-<!-- 2c597ecaf3962978dab6a81cc45d786886badf77(discount-style-plugin)(1.0.2) -->
-<script defer type="module">if(!window.__vite_is_modern_browser){try{import.meta.url;import("_").catch(()=>1);}catch(e){}window.__vite_is_modern_browser=true;}</script><script defer>if(!window.__le_is_modern_browser){window.__le_is_modern_browser = 'true';}</script><script defer src="https://cdn.myshopline.com/t/layout/plugin/2023040702134242/discount-style-plugin/entry.js"></script>
 
 <script>if(!window.__PRELOAD_STATE__){ window.__PRELOAD_STATE__ = {} };__PRELOAD_STATE__.eventTrace={"insert":{"ga":[{"id":"UA-210291513-38","alias":"Google-Analytics"}],"fb":false,"gtm":false,"bing":false},"enabled":{"GA":[{"alias":"Google-Analytics","id":"UA-210291513-38","enableEnhancedEcom":true}]}};__PRELOAD_STATE__.storeInfo={"storeId":"1648532495299","name":"Hekkanigeria","merchantId":"2000772367","redirectTo":"","domainParseToken":"aXTjg0WkwAvh46gvHHt6wjR\u002FN8oEJbARXJLqDhFoE0hq8rY2jjeg45MWit1WcHn2YEZKj5kOO+OxU5eNBLt8HQ==","logo":"","standardLogo":"https:\u002F\u002Fimg.myshopline.com\u002Fimage\u002Fstore\u002F2000772367\u002F1648532495299\u002F1ef5fa03726e4d63990256ef92e9914d.png?w=600&h=600","languageSetting":{"mode":"BROWSER","presetLanguage":"en","defaultLanguage":"en","supportLanguages":["en"],"enableSelector":true,"matchBrowserLanguage":false,"storeLanguage":"en"},"currency":"NGN","areaCode":"AF","timezone":"Etc\u002FGMT-8","timezoneOffset":28800,"storeDomainSetting":{"pageNotFoundRouteMode":"REDIRECT_HOME","googleThirdDomainTool":"","bingThirdDomainTool":"","faceBookThirdDomainTool":"9bvn12xy0wjmohqdn7vsfpj6crrlxq"},"status":1,"marketStorageRegion":"sg","gtmId":"","websiteThemeType":"LAYOUT_ENGINE","handle":"hekkanigeria","storeTags":null};</script>
 <script>if(!window.__PRELOAD_STATE__){ window.__PRELOAD_STATE__ = {} };__PRELOAD_STATE__.serverEventId="1681368164697_31d5a512cd1b47faa7302ca8a4f8f914";</script>
@@ -3440,52 +3519,6 @@ window.addEventListener('load', function () {
   
 
 
-<!-- CSR_PLUGIN_ASSETS -->
-<!-- f1824419ec418fa05fab6862aaf9f9a2eaf8eafd(conversionBooster)(1.2.1) -->
-<script >// SSR 部分，代码报错可以忽略，js不认识handlebars语法
-window.cb_plugins = {
-  getSortationName: () => {
-    return '';
-  },
-  // 分类获取分类id
-  getSortationId: () => {
-    return '' || '';
-  },
-  // pdp页获取spuSeq
-  getProductSpuSpuSeq: () => {
-    return '16055529680357889203520793';
-  },
-
-  // pdp页获取sortaionList
-  getProductSortaionList: () => {
-    return [{"sortationId":"12258444886290493876290793","sortationName":"TOP 10","uniqueKey":"top-10"},{"sortationId":"12258475146226221975160793","sortationName":"Earphones","uniqueKey":"earphones"},{"sortationId":"12253385875175063194510793","sortationName":"Electronic Products","uniqueKey":"electronic-products"},{"sortationId":"12253385875353237228210793","sortationName":"Best Sellers","uniqueKey":"best-seller"},{"sortationId":"12253385875078929756530793","sortationName":"Top Selling Products ","uniqueKey":"best-sale"},{"sortationId":"12257979816845243900180793","sortationName":"Earphone&Speaker","uniqueKey":"earphone"},{"sortationId":"12253385875083459604810793","sortationName":"New Arrivals","uniqueKey":"new-arrival"}];
-  },
-
-  getProductSkuSkuList: () => {
-    return [{"skuSeq":"18055529680361076874600793","price":1350000,"originPrice":1680000,"stock":0,"weight":null,"weightUnit":null,"available":false,"shelves":true,"skuAttributeIds":[{"id":"16155529680361076874620793","valueId":"16255529680361076874630793","attributeWeight":1,"attributeValueWeight":1},{"id":"16155529680361076874650793","valueId":"16255529680361076874660793","attributeWeight":2,"attributeValueWeight":1}],"videoList":null,"imageList":["https://img.myshopline.com/image/store/2000772367/1648532495299/66edbadc02f04d7fb844c20bffac6e3a.jpg?w=640&h=640"],"soldOut":true,"allowOversold":false,"itemNo":"1101212204","infiniteStock":false,"spuSeq":"16055529680357889203520793","discount":19,"saleActivityResponseList":null,"matchVip":false,"imageBeanList":[{"url":"https://img.myshopline.com/image/store/2000772367/1648532495299/66edbadc02f04d7fb844c20bffac6e3a.jpg?w=640&h=640","alt":"Newest Bluetooth Wireless Headphones"}],"skuPrice":1350000,"showMemberMark":false,"barcode":""},{"skuSeq":"18055529680361076874670793","price":1700000,"originPrice":2100000,"stock":2,"weight":null,"weightUnit":null,"available":true,"shelves":true,"skuAttributeIds":[{"id":"16155529680361076874620793","valueId":"16255529680361076874630793","attributeWeight":1,"attributeValueWeight":1},{"id":"16155529680361076874650793","valueId":"16255529680361076874700793","attributeWeight":2,"attributeValueWeight":2}],"videoList":null,"imageList":["https://img.myshopline.com/image/store/2000772367/1648532495299/66edbadc02f04d7fb844c20bffac6e3a.jpg?w=640&h=640"],"soldOut":false,"allowOversold":false,"itemNo":"1101212204*2","infiniteStock":false,"spuSeq":"16055529680357889203520793","discount":19,"saleActivityResponseList":null,"matchVip":false,"imageBeanList":[{"url":"https://img.myshopline.com/image/store/2000772367/1648532495299/66edbadc02f04d7fb844c20bffac6e3a.jpg?w=640&h=640","alt":"Newest Bluetooth Wireless Headphones"}],"skuPrice":1700000,"showMemberMark":false,"barcode":""}];
-  },
-
-  getProductSpu: () => {
-    return {"storeId":"1648532495299","merchantId":"2000772367","spuSeq":"16055529680357889203520793","categoryId":"SL201CATE4579122567810130001","title":"Newest Bluetooth Wireless Headphones","subTitle":"","productMinPrice":1350000,"productMaxPrice":1700000,"originPrice":0,"discount":0,"brand":null,"images":["https://img.myshopline.com/image/store/2000772367/1648532495299/d8afc780299243129c3f2b1c3a1bdfab.jpg?w=800&h=800","https://img.myshopline.com/image/store/2000772367/1648532495299/639d0fa8e4d9488291c37c18e1fc6bcb.jpg?w=800&h=800","https://img.myshopline.com/image/store/2000772367/1648532495299/b3d298168bfe4cc8acb42e4265edc0d0.jpg?w=800&h=800","https://img.myshopline.com/image/store/2000772367/1648532495299/b894f90608004a6da08fca6cc33bbb4e.jpg?w=800&h=800","https://img.myshopline.com/image/store/2000772367/1648532495299/594c039e662845efbc5435ee16ed843d.jpg?w=800&h=800","https://img.myshopline.com/image/store/2000772367/1648532495299/66edbadc02f04d7fb844c20bffac6e3a.jpg?w=640&h=640"],"video":[],"shelves":true,"upTime":1681108381,"downTime":null,"saleMin":-1,"saleMax":-1,"weight":null,"weightUnit":null,"shippingFilter":[],"payFilter":[],"soldOut":false,"stock":2,"infiniteStock":false,"version":"16358851164118190950250793","amazonCode":null,"amazonUrl":null,"yahooUrl":null,"rakutenUrl":null,"systemTime":1681368164671,"imageList":[{"url":"https://img.myshopline.com/image/store/2000772367/1648532495299/d8afc780299243129c3f2b1c3a1bdfab.jpg?w=800&h=800","alt":"Newest Bluetooth Wireless Headphones"},{"url":"https://img.myshopline.com/image/store/2000772367/1648532495299/639d0fa8e4d9488291c37c18e1fc6bcb.jpg?w=800&h=800","alt":"Newest Bluetooth Wireless Headphones"},{"url":"https://img.myshopline.com/image/store/2000772367/1648532495299/b3d298168bfe4cc8acb42e4265edc0d0.jpg?w=800&h=800","alt":"Newest Bluetooth Wireless Headphones"},{"url":"https://img.myshopline.com/image/store/2000772367/1648532495299/b894f90608004a6da08fca6cc33bbb4e.jpg?w=800&h=800","alt":"Newest Bluetooth Wireless Headphones"},{"url":"https://img.myshopline.com/image/store/2000772367/1648532495299/594c039e662845efbc5435ee16ed843d.jpg?w=800&h=800","alt":"Newest Bluetooth Wireless Headphones"},{"url":"https://img.myshopline.com/image/store/2000772367/1648532495299/66edbadc02f04d7fb844c20bffac6e3a.jpg?w=640&h=640","alt":"Newest Bluetooth Wireless Headphones"}],"sortationList":[{"sortationId":"12258444886290493876290793","sortationName":"TOP 10","uniqueKey":"top-10"},{"sortationId":"12258475146226221975160793","sortationName":"Earphones","uniqueKey":"earphones"},{"sortationId":"12253385875175063194510793","sortationName":"Electronic Products","uniqueKey":"electronic-products"},{"sortationId":"12253385875353237228210793","sortationName":"Best Sellers","uniqueKey":"best-seller"},{"sortationId":"12253385875078929756530793","sortationName":"Top Selling Products ","uniqueKey":"best-sale"},{"sortationId":"12257979816845243900180793","sortationName":"Earphone&Speaker","uniqueKey":"earphone"},{"sortationId":"12253385875083459604810793","sortationName":"New Arrivals","uniqueKey":"new-arrival"}],"amazonLink":null,"allowOversold":false,"inquiry":false,"mediaList":[{"resource":"https://img.myshopline.com/image/store/2000772367/1648532495299/d8afc780299243129c3f2b1c3a1bdfab.jpg?w=800&h=800","cover":null,"type":"IMAGE","alt":"Newest Bluetooth Wireless Headphones","image_width":800,"image_height":800},{"resource":"https://img.myshopline.com/image/store/2000772367/1648532495299/639d0fa8e4d9488291c37c18e1fc6bcb.jpg?w=800&h=800","cover":null,"type":"IMAGE","alt":"Newest Bluetooth Wireless Headphones","image_width":800,"image_height":800},{"resource":"https://img.myshopline.com/image/store/2000772367/1648532495299/b3d298168bfe4cc8acb42e4265edc0d0.jpg?w=800&h=800","cover":null,"type":"IMAGE","alt":"Newest Bluetooth Wireless Headphones","image_width":800,"image_height":800},{"resource":"https://img.myshopline.com/image/store/2000772367/1648532495299/b894f90608004a6da08fca6cc33bbb4e.jpg?w=800&h=800","cover":null,"type":"IMAGE","alt":"Newest Bluetooth Wireless Headphones","image_width":800,"image_height":800},{"resource":"https://img.myshopline.com/image/store/2000772367/1648532495299/594c039e662845efbc5435ee16ed843d.jpg?w=800&h=800","cover":null,"type":"IMAGE","alt":"Newest Bluetooth Wireless Headphones","image_width":800,"image_height":800},{"resource":"https://img.myshopline.com/image/store/2000772367/1648532495299/66edbadc02f04d7fb844c20bffac6e3a.jpg?w=640&h=640","cover":null,"type":"IMAGE","alt":"Newest Bluetooth Wireless Headphones","image_width":640,"image_height":640}],"visible":true,"productMarkList":null,"source":"SHOPLINE_IMPORT","uniqueKey":"newest-bluetooth-wireless-headphones","customCategoryName":""};
-  },
-
-  getConversionBoosterConfig: () => {
-    return {"configs":{"add-button-animation":{"itemId":"","dynamicEffectInterval":5,"dynamicEffectStyle":3},"real-time-viewers":{"itemId":"","rangeMin":10,"rangeMax":150,"max":10,"timeRange":2,"customerTitle":"Visitors","prefix":"WOW!","suffix":"are browsing our store.","position":1,"backgroundColor":"{\"r\":255,\"g\":255,\"b\":255,\"a\":1}","titleColor":"#242833"},"product-virtual-sale":{"effectiveProduct":0,"globalCfg":{"soldWords":"Month sold {sales_number}","soldType":1,"startRangeMin":99,"startRangeMax":2161,"upRangeMin":1,"upRangeMax":100,"bounceTimeUnit":0,"bounceInterval":15,"position":3,"backgroundColor":"{\"r\":176,\"g\":5,\"b\":5,\"a\":1}","titleColor":"#f9fafc"}},"shopping-cart-reminder":{"itemId":"","img":"https://img-va.myshopline.com/image/ecology/88888888/999999999/c79e4b5637694094b2a79fcd249c28c3.jpeg?w=909&h=440"},"dynamic-stock-countdown":{"effectiveProduct":0,"globalCfg":{"stockRangeMin":3,"stockRangeMax":10,"prefix":"Only","suffix":"left in stock！","position":1,"backgroundColor":"{\"r\":255,\"g\":255,\"b\":255,\"a\":0.1}","titleColor":"#242833"}}},"multipleConfigs":{}};
-  },
-
-  getPdpFirstSkuId: () => {
-    return '';
-  },
-
-  getCountryOptions: () => {
-    return '';
-  },
-};
-</script><script type="module">try{import.meta.url;import("_").catch(()=>1);}catch(e){}window.__vite_is_modern_browser=true;</script><script type="module">!function(){if(window.__vite_is_modern_browser)return;console.warn("dynamic import or import.meta.url is unsupported");var n=document.createElement("script");n.src="https://cdn.myshopline.com/t/layout/plugin/2023041218515050/conversionBooster-polyfills-legacy.js",n.onload=function(){System.import("https://cdn.myshopline.com/t/layout/plugin/2023041218515050/conversionBooster-index-legacy.js")},document.body.appendChild(n)}();</script><script nomodule src="https://cdn.myshopline.com/t/layout/plugin/2023041218515050/conversionBooster-polyfills-legacy.js"></script><script nomodule>System.import('https://cdn.myshopline.com/t/layout/plugin/2023041218515050/conversionBooster-index-legacy.js');</script><script type="module" src="https://cdn.myshopline.com/t/layout/plugin/2023041218515050/conversionBooster-index.js"></script>
-<!-- f42234a8407131a6e6e95aeb021e58c2452c6cf4(web-push)(1.0.1) -->
-<script defer src="https://cdn.myshopline.com/t/layout/plugin/2022062917015151/web-push.js"></script>
-<!-- 9bb91b695b1735ffa443c552370b395e0279917f(plugin-product-search)(1.0.9) -->
-<script type="module" defer src="https://cdn.myshopline.com/t/layout/plugin/2023041216002020/plugin-product-search-index.js"></script><script type="module" defer>try{import.meta.url;import("_").catch(()=>1);}catch(e){}window.__vite_is_modern_browser=true;</script><script type="module" defer>!function(){if(window.__vite_is_modern_browser)return;console.warn("dynamic import or import.meta.url is unsupported");var n=document.createElement("script");n.src="https://cdn.myshopline.com/t/layout/plugin/2023041216002020/plugin-product-search-polyfills-legacy.js",n.onload=function(){System.import("https://cdn.myshopline.com/t/layout/plugin/2023041216002020/plugin-product-search-index-legacy.js")},document.body.appendChild(n)}();</script><script nomodule defer src="https://cdn.myshopline.com/t/layout/plugin/2023041216002020/plugin-product-search-polyfills-legacy.js"></script><script nomodule defer src="https://cdn.myshopline.com/t/layout/plugin/2023041216002020/plugin-product-search-legacy-entry.js"></script>
 <div id="shopline-block-16812379655875d00a64" class="shopline-block">
 <div class="cb-extension-modal-mask" data-id="16812379655875d00a64" style="display: none;" data-type="app-embed-block" data-discount="{&quot;isOpen&quot;:1,&quot;itemId&quot;:&quot;&quot;,&quot;titleContent&quot;:&quot;Congrats!&quot;,&quot;titleColor&quot;:&quot;#000000&quot;,&quot;msgContent&quot;:&quot;A discount was applied to your order&quot;,&quot;msgColor&quot;:&quot;#000000&quot;,&quot;preferentialTitleColor&quot;:&quot;#000000&quot;,&quot;popBgColor&quot;:&quot;#FFFFFF&quot;,&quot;toCheckOutContent&quot;:&quot;CHECKOUT&quot;,&quot;toCheckOutColor&quot;:&quot;#000000&quot;,&quot;toShoppingContent&quot;:&quot;CONTINUE&quot;}">
   <div class="cb-extension-modal-content" style="background-color: #FFFFFF">
