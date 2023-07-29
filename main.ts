@@ -29,7 +29,7 @@ async function handleRequest(request: Request): Promise<Response> {
   // url.host = 'performance1.myshopline.com';
   // url.host = 'hekkanigeria.com';
   // url.host = 'anniecloth.com';
-  url.host = 'maxinejewelry.com';
+  url.host = 'tibjmtdah.myshopline.com';
   const fileName = fileNameMap[url.pathname];
 
   if (fileName) {
