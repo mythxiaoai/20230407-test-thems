@@ -282,6 +282,10 @@
         url: 'https://www.youtube.com/shorts/rURnLR6JjVI'
       },
       {
+        type: 'youtube',
+        url: 'https://www.youtube.com/shorts/uBE-n1YMrEg'
+      },
+      {
         type: 'local',
         url: 'test.mp4'
       },
@@ -342,9 +346,9 @@
 
       const playerConfig = {
         loop: { active: true },
-        controls: [],
-        clickToPlay: true,
+        controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
         keyboard: { focused: true, global: true },
+        clickToPlay: true,
         volume: 0,
         muted: true,
         youtube: isYouTube ? {
