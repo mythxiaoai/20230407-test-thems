@@ -1,176 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr" class="dark black">
     <head>
-        <link rel="dns-prefetch" href="https://www.bitget.com">
-        <link rel="preconnect" href="https://www.bitget.com" crossorigin>
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-        <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-        <link rel="dns-prefetch" href="https://cdn.shopify.com">
-        <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
-        <script>
-            (function() {
-               // 全局 lazy script 队列
-               window.lazyScriptQueue = [];
-               // MutationObserver 持续监听 DOM 变化
-               window.observer = new MutationObserver((mutations) => {
-                 mutations.forEach(({ addedNodes }) => {
-                   addedNodes.forEach((node) => {
-                     if (node.nodeType === 1) {
-                       if (node.tagName === "SCRIPT" && !node.dataset.processed) {
-                         node.type = node.type.toLowerCase();
-                         // 改变 script 类型，标记为延迟加载
-                         if (["text/javascript", "module"].includes((node.type || "text/javascript"))) {
-                           node.dataset.type = node.type || "text/javascript";
-                           node.type = "text/lazyload";
-                         }
-                         // 如果 script 类型为 lazyload，则加入全局队列（若尚未加入过）
-                         if (node.getAttribute("type") === "text/lazyload") {
-                           window.lazyScriptQueue.push(node);
-                         }
-                       }
-                       if (node.tagName === "A" && !node.href) {
-                        node.setAttribute('href', 'javascript:;');
-                      }
-                     }
-                   });
-                 });
-               });
-             
-               // 持续监听整个文档
-               window.observer.observe(document.documentElement, {
-                 childList: true,
-                 subtree: true,
-               });
-             
-               // 避免重复执行
-               var script_loaded = false;
-               var page_loaded = false;
-             
-               function getScriptPriority(script) {
-                 const isAsync = script.getAttribute('async') != null;
-                 const isDefer = script.getAttribute('defer') != null;
-                 if (!isAsync && !isDefer) return 1;
-                 if (script.defer) return 2;
-                 if (isAsync) return 3;
-                 return 4;
-               }
-             
-               function loadJSscripts() {
-                 if (!script_loaded) {
-                   console.log('script_loaded');
-                   script_loaded = true;
-             
-                   // 排序
-                   window.lazyScriptQueue = Array.from(window.lazyScriptQueue).sort((first, next) => getScriptPriority(first) - getScriptPriority(next));
-         
-                   // 队列确认空后，断开 observer
-                   if (window.observer) {
-                     window.observer.disconnect();
-                   }
-             
-                   // 定义顺序加载函数，该函数不断从队列中取出 script 加载，并轮询检查新加入的 script
-                   function sequentialLoad() {
-                     if (window.lazyScriptQueue.length === 0) {
-                       // 发送自定义事件，通知 dom 解析完成
-                       document.dispatchEvent(new CustomEvent("DOMContentLoaded"));
-                       window.dispatchEvent(new CustomEvent("DOMContentLoaded"));
-                       // 发送自定义事件，通知加载完成
-                       document.dispatchEvent(new CustomEvent("asyncLazyLoad"));
-                       window.dispatchEvent(new CustomEvent("asyncLazyLoad"));
-         
-                       if (page_loaded) {
-                         // 发送自定义事件，通知加载完成
-                         document.dispatchEvent(new CustomEvent("load"));
-                         window.dispatchEvent(new CustomEvent("load"));
-                       }
-                       return;
-                     }
-             
-                     // 从队列中取出第一个 script
-                     const currentScript = window.lazyScriptQueue.shift();
-                     // 创建一个新的 script 元素，克隆属性和内容
-                     const newScript = document.createElement("script");
-                     for (let a = 0; a < currentScript.attributes.length; a++) {
-                       const attr = currentScript.attributes[a];
-                       if (attr.name !== "type") {
-                         newScript.setAttribute(attr.name, attr.value);
-                       }
-                     }
-                     // 确保按顺序加载：同步模式
-                     newScript.async = false;
-                     newScript.dataset.processed = true;
-              newScript.type = currentScript.dataset.type || "text/javascript";
-                     if (currentScript.parentNode) {
-                       // 替换当前 lazy script 节点
-                       currentScript.parentNode.replaceChild(newScript, currentScript)
-                     } else {
-                       // 已移除的脚本添加到 head 底部
-                       document.head.appendChild(newScript);
-                     }
-                     
-                     // 如果有 src 表示外链资源
-                     if (currentScript.getAttribute("src")) {
-                      if (newScript.noModule) {
-                        sequentialLoad();
-                      } else {
-                        newScript.onload = newScript.onerror = function () {
-                          sequentialLoad();
-                        };
-                      }
-                     } else {
-                       // 内联 script，直接复制内容并延时调用下一步
-                       newScript.innerHTML = currentScript.innerHTML;
-                       sequentialLoad();
-                     }
-                   }
-                   
-                   // 启动 lazy script 的顺序加载
-                   sequentialLoad();
-                 }
-               }
-         
-               // 绑定页面各类用户活动事件触发 loadJSscripts
-              var activityEvents = [
-                "mousedown",
-                "mousemove",
-                "keydown",
-                "scroll",
-                "touchstart",
-                "click",
-                "keypress",
-                "touchmove",
-              ];
-      
-              activityEvents.forEach(function (eventName) {
-                window.addEventListener(eventName, function() {
-                  if (document.readyState === "loading") {
-                    document.addEventListener("DOMContentLoaded", loadJSscripts, { once: true });
-                  } else {
-                    loadJSscripts();
-                  }
-                }, {
-                  capture: false,
-                  once: true
-                });
-              });
-      
-              if (navigator.platform != "Linux x86_64") {
-                document.addEventListener("DOMContentLoaded", loadJSscripts, { once: true });
-              }
-      
-              window.addEventListener('load', function (event) {
-                if (script_loaded) {
-                  if (window.lazyScriptQueue.length) {
-                    event.stopImmediatePropagation();
-                    event.preventDefault();
-                  }
-                }
-              }, {
-                capture: false,
-                once: true,
-              });
-             })()
-           </script>
         <meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
         <meta data-rh="true" name="description" content="Bitget is a leading crypto exchange and Web3 company to buy, sell, hold and earn cryptocurrencies. It supports Bitcoin, Ethereum, over 500 altcoins."/>
         <meta data-rh="true" property="og:title" content="Bitget Exchange: Crypto Trading Platform | Buy and Sell Bitcoin, Ethereum"/>
@@ -219,26 +49,17 @@
         <link data-rh="true" rel="alternate" hrefLang="en-UZ" href="https://www.bitgetapp.com"/>
         <link data-rh="true" rel="alternate" hrefLang="ru-UZ" href="https://www.bitgetapp.com/ru"/>
         <link data-rh="true" rel="alternate" hrefLang="x-default" href="https://www.bitget.com"/>
-        <!-- 首页并没有用到的资源预加载造成资源浪费 -->
-        <!-- <link data-rh="true" rel="preload" fetchPriority="high" href="https://img.bgstatic.com/multiLang/web/de71abca4b46a8e0f33ed3e54a88c769.png?w=460&amp;h=460&amp;q=50&amp;f=webp" as="image"/>
+        <link data-rh="true" rel="preload" fetchPriority="high" href="https://img.bgstatic.com/multiLang/web/de71abca4b46a8e0f33ed3e54a88c769.png?w=460&amp;h=460&amp;q=50&amp;f=webp" as="image"/>
         <link data-rh="true" rel="preload" fetchPriority="high" href="https://img.bgstatic.com/multiLang/web/3f6e3e06ce507ce78b54979a7e68897d.mp4" as="video"/>
-        <link data-rh="true" rel="preload" href="/portalx-static/img/home/defaut-icon.png"/> -->
+        <link data-rh="true" rel="preload" href="/portalx-static/img/home/defaut-icon.png"/>
         <link data-rh="true" rel="preconnect" href="https://img.bgstatic.com"/>
         <link data-rh="true" rel="dns-prefetch" href="https://img.bgstatic.com"/>
         <link rel="icon" type="image/x-icon" href="/baseasset/favicon4.png">
-        <!-- 字体资源加载调整，直接内联和预加载 -->
-        <!-- <link rel='stylesheet' href='/baseasset/font.css?random=20230911'/> -->
-         <!-- 字体预加载 -->
-         <link rel="preload" href="/baseasset/fonts/Switzer-Medium.otf" as="font" type="font/otf" crossorigin>
-         <link rel="preload" href="/baseasset/fonts/Switzer-Regular.otf" as="font" type="font/otf" crossorigin>
-         <link rel="preload" href="/baseasset/fonts/Switzer-Semibold.otf" as="font" type="font/otf" crossorigin>
-         <link rel="preload" href="/baseasset/fonts/Switzer-Bold.otf" as="font" type="font/otf" crossorigin>
-         <!-- 该css属于第二个section，非首屏，不需要预加载 -->
-        <!-- <link data-chunk="components-Template-SimpleTemplate" rel="preload" as="style" href="/portalx-static/client/css/a6c0f1b486b804cd1da2.css"> -->
+        <link rel='stylesheet' href='/baseasset/font.css?random=20230911'/>
+        <link data-chunk="components-Template-SimpleTemplate" rel="preload" as="style" href="/portalx-static/client/css/a6c0f1b486b804cd1da2.css">
         <link data-chunk="client" rel="preload" as="style" href="/portalx-static/client/css/eea5226ec9a9246c5e24.css">
         <link data-chunk="client" rel="preload" as="style" href="/portalx-static/client/css/6f3609aa633de3d72c56.css">
-        <!-- 预加载需要权衡性能和用户体验 -->
-        <!-- <link data-chunk="client" rel="preload" as="script" href="/portalx-static/client/js/runtime.fd1af80f4ed5eecca4c9.main.js">
+        <link data-chunk="client" rel="preload" as="script" href="/portalx-static/client/js/runtime.fd1af80f4ed5eecca4c9.main.js">
         <link data-chunk="client" rel="preload" as="script" href="/portalx-static/client/js/3652.e94a8677f4f84e66c159.main.js">
         <link data-chunk="client" rel="preload" as="script" href="/portalx-static/client/js/6487.8408640eeab0416fc69f.main.js">
         <link data-chunk="client" rel="preload" as="script" href="/portalx-static/client/js/6576.f915d80dbd60e0715834.main.js">
@@ -253,111 +74,7 @@
         <link data-chunk="components-Template-SimpleTemplate" rel="preload" as="script" href="/portalx-static/client/js/5921.b205128254cebf8a13f2.chunk.js">
         <link data-chunk="components-Template-SimpleTemplate" rel="preload" as="script" href="/portalx-static/client/js/3051.79170347512a5eae95c1.chunk.js">
         <link data-chunk="components-Template-SimpleTemplate" rel="preload" as="script" href="/portalx-static/client/js/7167.55f9f2f145b59062c280.chunk.js">
-        <link data-chunk="components-Template-SimpleTemplate" rel="preload" as="script" href="/portalx-static/client/js/components-Template-SimpleTemplate.4c0937045519a62b84a3.chunk.js"> -->
-        <!-- 字体资源内联 -->
-        <style>
-            @font-face {
-            font-family: 'Switzer-Black';
-            src: url('/baseasset/fonts/Switzer-Black.otf') format('opentype');
-            font-display: swap;
-            }
-            @font-face {
-            font-family: 'Switzer-BlackItalic';
-            src: url('/baseasset/fonts/Switzer-BlackItalic.otf') format('opentype');
-            font-display: swap;
-            }
-            @font-face {
-            font-family: 'Switzer';
-            font-weight: 300;
-            src: url('/baseasset/fonts/Switzer-Thin.otf') format('opentype');
-            font-display: optional;
-            }
-            @font-face {
-            font-family: 'Switzer';
-            font-weight: 400;
-            src: url('/baseasset/fonts/Switzer-Regular.otf') format('opentype');
-            font-display: optional;
-            }
-            @font-face {
-            font-family: 'Switzer';
-            font-weight: 500;
-            src: url('/baseasset/fonts/Switzer-Medium.otf') format('opentype');
-            font-display: optional;
-            }
-            @font-face {
-            font-family: 'Switzer';
-            font-weight: 600;
-            src: url('/baseasset/fonts/Switzer-Semibold.otf') format('opentype');
-            font-display: optional;
-            }
-            @font-face {
-            font-family: 'Switzer';
-            font-weight: 700;
-            src: url('/baseasset/fonts/Switzer-Bold.otf') format('opentype');
-            font-display: optional;
-            }
-            @font-face {
-            font-family: 'Switzer-BoldItalic';
-            src: url('/baseasset/fonts/Switzer-BoldItalic.otf') format('opentype');
-            font-display: swap;
-            }
-            @font-face {
-            font-family: 'Switzer-Extrabold';
-            src: url('/baseasset/fonts/Switzer-Extrabold.otf') format('opentype');
-            font-display: swap;
-            }
-            @font-face {
-            font-family: 'Switzer-ExtraboldItalic';
-            src: url('/baseasset/fonts/Switzer-ExtraboldItalic.otf') format('opentype');
-            font-display: swap;
-            }
-            @font-face {
-            font-family: 'Switzer-Extralight';
-            src: url('/baseasset/fonts/Switzer-Extralight.otf') format('opentype');
-            font-display: swap;
-            }
-            @font-face {
-            font-family: 'Switzer-ExtralightItalic';
-            src: url('/baseasset/fonts/Switzer-ExtralightItalic.otf') format('opentype');
-            font-display: swap;
-            }
-            @font-face {
-            font-family: 'Switzer-Italic';
-            src: url('/baseasset/fonts/Switzer-Italic.otf') format('opentype');
-            font-display: swap;
-            }
-            @font-face {
-            font-family: 'Switzer-LightItalic';
-            src: url('/baseasset/fonts/Switzer-LightItalic.otf') format('opentype');
-            font-display: swap;
-            }
-            @font-face {
-            font-family: 'Switzer-MediumItalic';
-            src: url('/baseasset/fonts/Switzer-MediumItalic.otf') format('opentype');
-            font-display: swap;
-            }
-            
-            
-            @font-face {
-            font-family: 'Switzer-SemiboldItalic';
-            src: url('/baseasset/fonts/Switzer-SemiboldItalic.otf') format('opentype');
-            font-display: swap;
-            }
-            @font-face {
-            font-family: 'Switzer-ThinItalic';
-            src: url('/baseasset/fonts/Switzer-ThinItalic.otf') format('opentype');
-            font-display: swap;
-            }
-            
-            .number_medium {
-            font-family: 'proxima-nova';
-            }
-            
-            .default_font_family .headline_module__title {
-            font-family: Switzer, Arial, sans-serif;
-            }
-        </style>
-
+        <link data-chunk="components-Template-SimpleTemplate" rel="preload" as="script" href="/portalx-static/client/js/components-Template-SimpleTemplate.4c0937045519a62b84a3.chunk.js">
         <style data-rc-order="prependQueue" data-rc-priority="0" data-token-hash="1nhhini" data-css-hash="yfn1qn">
             :where(.css-rssmgx)[class^="bit-input"],:where(.css-rssmgx)[class*=" bit-input"] {
                 font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';
@@ -2719,8 +2436,7 @@
         </style>
         <link data-chunk="client" rel="stylesheet" href="/portalx-static/client/css/6f3609aa633de3d72c56.css">
         <link data-chunk="client" rel="stylesheet" href="/portalx-static/client/css/eea5226ec9a9246c5e24.css">
-        <!-- 非首屏css资源，后置加载 -->
-        <link data-chunk="components-Template-SimpleTemplate" rel="stylesheet" href="/portalx-static/client/css/a6c0f1b486b804cd1da2.css"  media="print" onload="this.media='all'">
+        <link data-chunk="components-Template-SimpleTemplate" rel="stylesheet" href="/portalx-static/client/css/a6c0f1b486b804cd1da2.css">
         <noscript>
             <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQ4HTBR" height="0" width="0" style="display:none;visibility:hidden"></iframe>
         </noscript>
@@ -2741,14 +2457,11 @@
             gtag('js', new Date())
             gtag('config', 'G-Z8Q93KHR0F')
         </script>
-        <!--谷歌分析可以后置-->
-        <script defer type="text/javaScript" src="/cdnstatic/libs/gt4.v1.min.js"></script>
-        <!--苹果授权可以后置-->
-        <script defer type="text/javaScript" src="/portalx-static/thirdParty/appleid.auth.js"></script>
-        <!--telegram可以后置-->
-        <script defer type="text/javaScript" src="/portalx-static/thirdParty/telegram-widget.js"></script>
-        <script defer src="/cdnstatic/libs/react.v18.3.0.min.js"></script>
-        <script defer src="/cdnstatic/libs/react-dom.v18.3.0.min.js"></script>
+        <script async defer type="text/javaScript" src="/cdnstatic/libs/gt4.v1.min.js"></script>
+        <script async defer type="text/javaScript" src="/portalx-static/thirdParty/appleid.auth.js"></script>
+        <script async defer type="text/javaScript" src="/portalx-static/thirdParty/telegram-widget.js"></script>
+        <script src="/cdnstatic/libs/react.v18.3.0.min.js"></script>
+        <script src="/cdnstatic/libs/react-dom.v18.3.0.min.js"></script>
     </head>
     <body>
         <div id="root">
@@ -3515,7 +3228,7 @@
                 </div>
                 <div class="_VDY50suIHeXLQpY7n7M">
                     <div class="bg-[#000] overflow-hidden">
-                        <video class="w-[102%] absolute opacity-80 pad:(hidden) phone:(hidden)" src="https://cdn.shopify.com/videos/c/o/v/51097c7098a24810b54b9ad792e61e72.mp4" autoplay="" preload="auto" muted="" playsinline="" loop=""></video>
+                        <video class="w-[102%] absolute opacity-80 pad:(hidden) phone:(hidden)" src="https://img.bgstatic.com/video/msg/herobanner-1732092714.mp4" autoplay="" preload="auto" muted="" playsinline="" loop=""></video>
                         <div class="mx-auto mt-[90px] box-content air:mt-[44px] pad:mt-[0] phone:mt-[20px] max-w-[1200px] flex justify-between px-[40px] pad:px-[24px] pad:flex-col phone:px-[16px] phone:flex-col phone:gap-0">
                             <div class="relative pad:flex pad:flex-col pad:justify-center pad:mb-[32px]">
                                 <div class="FiQVwsOLW56bdv3r93Cp text-[32px] air:text-[22px] pad:py-[32px] pad:text-[16px]">
@@ -5010,21 +4723,21 @@
                     "components-Template-SimpleTemplate"
                 ]
             }</script>
-        <script defer data-chunk="client" src="/portalx-static/client/js/runtime.fd1af80f4ed5eecca4c9.main.js"></script>
-        <script defer data-chunk="client" src="/portalx-static/client/js/3652.e94a8677f4f84e66c159.main.js"></script>
-        <script defer data-chunk="client" src="/portalx-static/client/js/6487.8408640eeab0416fc69f.main.js"></script>
-        <script defer data-chunk="client" src="/portalx-static/client/js/6576.f915d80dbd60e0715834.main.js"></script>
-        <script defer data-chunk="client" src="/portalx-static/client/js/4546.16641beb8d51a1a85b65.main.js"></script>
-        <script defer data-chunk="client" src="/portalx-static/client/js/2992.c603fb34ed54c926772c.main.js"></script>
-        <script defer data-chunk="client" src="/portalx-static/client/js/8367.391b5c47c510ccc896ef.main.js"></script>
-        <script defer data-chunk="client" src="/portalx-static/client/js/client.75c952d5381039e41baa.main.js"></script>
-        <script defer data-chunk="components-Template-SimpleTemplate" src="/portalx-static/client/js/6120.caf0cb46fd62fb866d01.chunk.js"></script>
-        <script defer data-chunk="components-Template-SimpleTemplate" src="/portalx-static/client/js/6242.bd394d73de00930540e1.chunk.js"></script>
-        <script defer data-chunk="components-Template-SimpleTemplate" src="/portalx-static/client/js/4415.abfc9cb99d01be12d178.chunk.js"></script>
-        <script defer data-chunk="components-Template-SimpleTemplate" src="/portalx-static/client/js/7062.161dd07e2a10697c66c7.chunk.js"></script>
-        <script defer data-chunk="components-Template-SimpleTemplate" src="/portalx-static/client/js/5921.b205128254cebf8a13f2.chunk.js"></script>
-        <script defer data-chunk="components-Template-SimpleTemplate" src="/portalx-static/client/js/3051.79170347512a5eae95c1.chunk.js"></script>
-        <script defer data-chunk="components-Template-SimpleTemplate" src="/portalx-static/client/js/7167.55f9f2f145b59062c280.chunk.js"></script>
-        <script defer data-chunk="components-Template-SimpleTemplate" src="/portalx-static/client/js/components-Template-SimpleTemplate.4c0937045519a62b84a3.chunk.js"></script>
+        <script async data-chunk="client" src="/portalx-static/client/js/runtime.fd1af80f4ed5eecca4c9.main.js"></script>
+        <script async data-chunk="client" src="/portalx-static/client/js/3652.e94a8677f4f84e66c159.main.js"></script>
+        <script async data-chunk="client" src="/portalx-static/client/js/6487.8408640eeab0416fc69f.main.js"></script>
+        <script async data-chunk="client" src="/portalx-static/client/js/6576.f915d80dbd60e0715834.main.js"></script>
+        <script async data-chunk="client" src="/portalx-static/client/js/4546.16641beb8d51a1a85b65.main.js"></script>
+        <script async data-chunk="client" src="/portalx-static/client/js/2992.c603fb34ed54c926772c.main.js"></script>
+        <script async data-chunk="client" src="/portalx-static/client/js/8367.391b5c47c510ccc896ef.main.js"></script>
+        <script async data-chunk="client" src="/portalx-static/client/js/client.75c952d5381039e41baa.main.js"></script>
+        <script async data-chunk="components-Template-SimpleTemplate" src="/portalx-static/client/js/6120.caf0cb46fd62fb866d01.chunk.js"></script>
+        <script async data-chunk="components-Template-SimpleTemplate" src="/portalx-static/client/js/6242.bd394d73de00930540e1.chunk.js"></script>
+        <script async data-chunk="components-Template-SimpleTemplate" src="/portalx-static/client/js/4415.abfc9cb99d01be12d178.chunk.js"></script>
+        <script async data-chunk="components-Template-SimpleTemplate" src="/portalx-static/client/js/7062.161dd07e2a10697c66c7.chunk.js"></script>
+        <script async data-chunk="components-Template-SimpleTemplate" src="/portalx-static/client/js/5921.b205128254cebf8a13f2.chunk.js"></script>
+        <script async data-chunk="components-Template-SimpleTemplate" src="/portalx-static/client/js/3051.79170347512a5eae95c1.chunk.js"></script>
+        <script async data-chunk="components-Template-SimpleTemplate" src="/portalx-static/client/js/7167.55f9f2f145b59062c280.chunk.js"></script>
+        <script async data-chunk="components-Template-SimpleTemplate" src="/portalx-static/client/js/components-Template-SimpleTemplate.4c0937045519a62b84a3.chunk.js"></script>
     </body>
 </html>
